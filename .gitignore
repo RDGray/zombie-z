@@ -1,0 +1,10 @@
+﻿
+*.sketch
+
+*.xd
+*.fig
+
+
+.DS_Store
+
+node_modules/
