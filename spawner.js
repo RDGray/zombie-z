@@ -1,9 +1,7 @@
-import * as PIXI from "pixi.js";
-
 export default class Spawner {
   constructor({ create }) {
     const spawnInterval = 1000; //in ms
-    this.maxSpawns = 3;
+    this.maxSpawns = 30;
     this.create = create;
     this.spawns = [];
     setInterval(() => this.spawn(), spawnInterval);
