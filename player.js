@@ -5,11 +5,16 @@ export default class Player {
   constructor({ app }) {
     this.app = app;
     const playerWidth = 32;
-    this.player = new PIXI.Sprite(PIXI.Texture.WHITE);
+    let sheet =
+      PIXI.Loader.shared.resources["assets/hero_male.json"].spritesheet; // player animation
+    this.player = new PIXI.AnimatedSprite(sheet.animations["idle"]); // player animation
+    this.player.animationSpeed = 0.1; // player animation
+    this.player.play(); // player animation
+    //this.player = new PIXI.Sprite(PIXI.Texture.WHITE); //square as player
     this.player.anchor.set(0.5);
     this.player.position.set(app.screen.width / 2, app.screen.height / 2);
-    this.player.width = this.player.height = playerWidth;
-    this.player.tint = 0xea985d;
+    // this.player.width = this.player.height = playerWidth; //square player props
+    // this.player.tint = 0xea985d; //square player props
 
     app.stage.addChild(this.player);
 
@@ -53,7 +58,7 @@ export default class Player {
     return this.player.width;
   }
 
-  update() {
+  update(delta) {
     if (this.dead) return; //if player is dead
     const mouse = this.app.renderer.plugins.interaction.mouse;
     const cursorPosition = mouse.global;
@@ -69,6 +74,6 @@ export default class Player {
       this.shooting.shoot = mouse.buttons !== 0;
       this.lastMouseButton = mouse.buttons;
     }
-    this.shooting.update();
+    this.shooting.update(delta); // frame rate delta for consistency
   }
 }

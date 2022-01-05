@@ -22,7 +22,7 @@ export default class Zombie {
     this.attacking = true;
     this.interval = setInterval(() => this.player.attack(), 200); // get to player and chip away the healthy
   }
-  update() {
+  update(delta) {
     //enemy movement
     let e = new Victor(this.zombie.position.x, this.zombie.position.y); // this.zombie
     let s = new Victor(this.player.position.x, this.player.position.y); // player
@@ -35,7 +35,7 @@ export default class Zombie {
     }
 
     let d = s.subtract(e); // marking  player and this.zombie position
-    let v = d.normalize().multiplyScalar(this.speed); // normalize and multiply
+    let v = d.normalize().multiplyScalar(this.speed * delta); // normalize and multiply
     this.zombie.position.set(
       this.zombie.position.x + v.x,
       this.zombie.position.y + v.y
