@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 
 import Player from "./player.js";
 import Zombie from "./zombie.js";
+import Spawner from "./spawner.js";
 
 //import Matter from "matter-js";
 
@@ -15,14 +16,14 @@ const app = new PIXI.Application({
 });
 
 let player = new Player({ app });
-let zombie = new Zombie({ app, player });
+let zSpawner = new Spawner({ create: () => new Zombie({ app, player }) });
 
 //enemy
 
 //cursor and square movement
 app.ticker.add((delta) => {
   player.update(); // calling the method from player.js
-  zombie.update();
+  zSpawner.spawns.forEach((zombie) => zombie.update());
 });
 
 //zombies spawn
