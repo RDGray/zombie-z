@@ -5,12 +5,26 @@ export default class Shooting {
   constructor({ app, player }) {
     this.app = app;
     this.player = player;
-    this.bulletSpeed = 4;
+    this.bulletSpeed = 10;
     this.bullets = [];
     this.bulletRadius = 8;
-    this.maxBullets = 3;
+    this.maxBullets = 30;
   }
   fire() {
+    //managing bullets outside of the screen
+    if (this.bullets.length >= this.maxBullets) {
+      let b = this.bullets.shift();
+      this.app.stage.removeChild(b);
+    }
+
+    this.bullets.forEach((b) => this.app.stage.removeChild(b));
+    this.bullets = this.bullets.filter(
+      (b) =>
+        Math.abs(b.position.x) < this.app.screen.width &&
+        Math.abs(b.position.y) < this.app.screen.height
+    );
+    this.bullets.forEach((b) => this.app.stage.addChild(b));
+    //end anaging bullets outside of the screen
     const bullet = new PIXI.Graphics();
     bullet.position.set(this.player.position.x, this.player.position.y);
     bullet.beginFill(0x0000ff, 1);
@@ -24,11 +38,12 @@ export default class Shooting {
     ).multiplyScalar(this.bulletSpeed);
     this.bullets.push(bullet);
     this.app.stage.addChild(bullet);
+    console.log(this.bullets.length, this.app.stage.children.length);
   }
   set shoot(shooting) {
     if (shooting) {
       this.fire();
-      this.interval = setInterval(() => this.fire(), 500);
+      this.interval = setInterval(() => this.fire(), 500); //this.fire(), it taken out works fine // Section 4 video 7. Shooting
     } else {
       clearInterval(this.interval);
     }
