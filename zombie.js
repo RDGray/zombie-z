@@ -17,14 +17,20 @@ export default class Zombie {
     app.stage.addChild(this.zombie);
   }
 
+  attackPlayer() {
+    if (this.attacking) return;
+    this.attacking = true;
+    this.interval = setInterval(() => this.player.attack(), 200); // get to player and chip away the healthy
+  }
   update() {
     //enemy movement
     let e = new Victor(this.zombie.position.x, this.zombie.position.y); // this.zombie
     let s = new Victor(this.player.position.x, this.player.position.y); // player
     //behaviour when this.zombie get to player
     if (e.distance(s) < this.player.width / 2) {
-      let r = this.randomSpawnPoint();
-      this.zombie.position.set(r.x, r.y);
+      this.attackPlayer();
+      //let r = this.randomSpawnPoint();   random spawn after reaching player
+      //this.zombie.position.set(r.x, r.y); random spawn after reaching player
       return;
     }
 
@@ -33,11 +39,13 @@ export default class Zombie {
     this.zombie.position.set(
       this.zombie.position.x + v.x,
       this.zombie.position.y + v.y
-    ); //enemy movement
+    );
   }
 
+  //kill zombies
   kill() {
     this.app.stage.removeChild(this.zombie);
+    clearInterval(this.interval);
     // we can put animation here for kill
   }
 
