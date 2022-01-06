@@ -5,9 +5,9 @@ import Player from "./player.js";
 import Zombie from "./zombie.js";
 import Spawner from "./spawner.js";
 import { zombies } from "./globals.js";
+import Weather from "./weather.js";
 
 //canvas
-
 let canvasSize = 512; // to change game size
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
@@ -15,6 +15,7 @@ const app = new PIXI.Application({
   width: canvasSize, // to change game size
   height: canvasSize, // to change game size
   // backgroundColor: bgTexture, //
+
   resolution: 2,
 });
 //fix resolution from scale
@@ -33,6 +34,9 @@ async function initGame() {
     console.log("Loading...."); // check if loading
     await loadAssets();
     console.log("Loaded"); // check if loaded
+    //weather
+    app.weather = new Weather({ app });
+
     let player = new Player({ app });
     let zSpawner = new Spawner({
       app,
@@ -95,6 +99,7 @@ function createScene(sceneText) {
 
 function startGame() {
   app.gameStarted = true;
+  app.weather.enableSound();
 }
 
 async function loadAssets() {
@@ -105,6 +110,7 @@ async function loadAssets() {
     PIXI.Loader.shared.add("assets/hero_male.json"); // pixi loader
     PIXI.Loader.shared.add("bullet", "assets/bullet.png"); //name, path
     PIXI.Loader.shared.add("textures", "assets/textures1.png"); //name, path
+    PIXI.Loader.shared.add("rain", "assets/rain.png"); //rain, path
 
     PIXI.Loader.shared.onComplete.add(resolve);
     PIXI.Loader.shared.onError.add(reject);

@@ -7,7 +7,7 @@ export default class Shooting {
     this.player = player;
     this.bulletSpeed = 10;
     this.bullets = [];
-    this.bulletRadius = 5;
+    this.bulletRadius = 2;
     this.maxBullets = 30;
   }
   fire() {
