@@ -1,19 +1,27 @@
 import * as PIXI from "pixi.js";
 import Victor from "victor";
+import { zombies } from "./globals.js";
 
 export default class Zombie {
   constructor({ app, player }) {
     this.app = app;
     this.player = player;
 
-    const radius = 16;
     this.speed = 3;
-    this.zombie = new PIXI.Graphics();
+    // this.zombie = new PIXI.Graphics(); // old zombie circle
     let r = this.randomSpawnPoint();
+    let zombieName = zombies[Math.floor(Math.random() * zombies.length)]; // zombies random sprites
+    this.speed = zombieName === "quickzee" ? 1 : 0.25; // quickzee zombie speed
+    let sheet =
+      PIXI.Loader.shared.resources[`assets/${zombieName}.json`].spritesheet; //loading the quickzee sprite
+    this.die = new PIXI.AnimatedSprite(sheet.animations["die"]); // zombie die sprite
+    this.attack = new PIXI.AnimatedSprite(sheet.animations["attack"]); // zombie attack sprite
+    this.zombie = new PIXI.AnimatedSprite(sheet.animations["walk"]); // zombie walk sprite
+    this.zombie.animationSpeed = zombieName === "quickzee" ? 0.2 : 0.1; // animation speed
+    this.zombie.play(); // play animation
+    this.zombie.anchor.set(0.5); // anchor
     this.zombie.position.set(r.x, r.y);
-    this.zombie.beginFill(0xff0000, 1);
-    this.zombie.drawCircle(0, 0, radius);
-    this.zombie.endFill();
+
     app.stage.addChild(this.zombie);
   }
 
@@ -36,17 +44,22 @@ export default class Zombie {
 
     let d = s.subtract(e); // marking  player and this.zombie position
     let v = d.normalize().multiplyScalar(this.speed * delta); // normalize and multiply
+    this.zombie.scale.x = v.x < 0 ? 1 : -1; // flip zombie sprite
     this.zombie.position.set(
       this.zombie.position.x + v.x,
       this.zombie.position.y + v.y
     );
   }
 
-  //kill zombies
+  //kill zombies // we can put animation here for kill
   kill() {
-    this.app.stage.removeChild(this.zombie);
+    // this.app.stage.removeChild(this.zombie); // zombie dissapear when killed
+    this.zombie.textures = this.die.textures; // zombie die animation
+    this.zombie.loop = false; // stop die looping animation
+    this.zombie.onComplete = () =>
+      setTimeout(() => this.app.stage.removeChild(this.zombie), 30000); // remove zombie after 30 sec
+    this.zombie.play(); // play die animation
     clearInterval(this.interval);
-    // we can put animation here for kill
   }
 
   get position() {

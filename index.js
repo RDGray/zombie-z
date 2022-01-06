@@ -6,14 +6,25 @@ import Zombie from "./zombie.js";
 import Spawner from "./spawner.js";
 import { zombies } from "./globals.js";
 
-let canvasSize = 600; // to change game size
+//canvas
+
+let canvasSize = 512; // to change game size
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
   view: canvas,
   width: canvasSize, // to change game size
   height: canvasSize, // to change game size
-  backgroundColor: 0x5c812f,
+  backgroundColor: `red`, //
+  resolution: 2,
 });
+//fix resolution from scale
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
+//Add the canvas that Pixi automatically created for you to the HTML document
+const texture = PIXI.Texture.from("assets/textures1.png");
+const bgTexture = new PIXI.Sprite(texture);
+
+app.stage.addChild(bgTexture);
 
 initGame();
 
@@ -72,6 +83,7 @@ function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
 // Scene Container
 function createScene(sceneText) {
   const sceneContainer = new PIXI.Container();
+
   const text = new PIXI.Text(sceneText); //can style it
   text.x = app.screen.width / 2; // center
   text.y = app.screen.height / 2; // top
@@ -93,6 +105,7 @@ async function loadAssets() {
     }); // loaded all the json zombie files from assets folder
     PIXI.Loader.shared.add("assets/hero_male.json"); // pixi loader
     PIXI.Loader.shared.add("bullet", "assets/bullet.png"); //name, path
+    PIXI.Loader.shared.add("textures", "assets/textures1.png"); //name, path
 
     PIXI.Loader.shared.onComplete.add(resolve);
     PIXI.Loader.shared.onError.add(reject);

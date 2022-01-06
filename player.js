@@ -7,6 +7,10 @@ export default class Player {
     const playerWidth = 32;
     let sheet =
       PIXI.Loader.shared.resources["assets/hero_male.json"].spritesheet; // player animation
+
+    this.idle = new PIXI.AnimatedSprite(sheet.animations["idle"]);
+    this.shoot = new PIXI.AnimatedSprite(sheet.animations["shoot"]);
+
     this.player = new PIXI.AnimatedSprite(sheet.animations["idle"]); // player animation
     this.player.animationSpeed = 0.1; // player animation
     this.player.play(); // player animation
@@ -27,11 +31,11 @@ export default class Player {
     const margin = 16;
     const barHeight = 8;
     this.healthBar = new PIXI.Graphics();
-    this.healthBar.beginFill(0xff0000);
-    this.healthBar.initialWidth = app.screen.width - 2 * margin; // healthbar width
+    this.healthBar.beginFill(0x8b0000);
+    this.healthBar.initialWidth = app.screen.width - 20 * margin; // healthbar width
     this.healthBar.drawRect(
       margin,
-      10, // app.screen.height - barHeight - margin / 2, to put healthbar bottom
+      app.screen.height - barHeight - margin / 2, // healthbar possition
       this.healthBar.initialWidth,
       barHeight
     );
@@ -68,9 +72,14 @@ export default class Player {
         cursorPosition.x - this.player.position.x
       ) +
       Math.PI / 2;
-    this.player.rotation = angle;
+    this.rotation = angle; //rotation of the sprite
+    this.player.scale.x = cursorPosition.x < this.player.position.x ? -1 : 1; //flip sprite
 
     if (mouse.buttons !== this.lastMouseButton) {
+      this.player.textures =
+        mouse.buttons === 0 ? this.idle.textures : this.shoot.textures; //shooting animations
+      this.player.play(); //shooting animations play
+
       this.shooting.shoot = mouse.buttons !== 0;
       this.lastMouseButton = mouse.buttons;
     }
