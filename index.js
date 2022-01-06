@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js";
 import Player from "./player.js";
 import Zombie from "./zombie.js";
 import Spawner from "./spawner.js";
-import { zombies } from "./globals.js";
+import { textStyle, subTextStyle, zombies } from "./globals.js";
 import Weather from "./weather.js";
 
 //canvas
@@ -44,13 +44,12 @@ async function initGame() {
     });
 
     //Game start Container
-    let gameStartScene = createScene("Click to Start");
+    let gameStartScene = createScene("Horde", "Click to Start");
     let gameOverScene = createScene("YOU DIED");
     app.gameStarted = false;
 
-    //cursor and square movement
+    //cursor and square movement   // delta - frame rate
     app.ticker.add((delta) => {
-      // delta - frame rate
       gameStartScene.visible = !app.gameStarted; // delete the "Click to Start"
       gameOverScene.visible = player.dead; // delete the "YOU DIED"
       if (app.gameStarted === false) return; //game stopped + in spwaner stop
@@ -84,15 +83,22 @@ function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
 }
 
 // Scene Container
-function createScene(sceneText) {
+function createScene(sceneText, sceneSubText) {
   const sceneContainer = new PIXI.Container();
 
-  const text = new PIXI.Text(sceneText); //can style it
+  const text = new PIXI.Text(sceneText, new PIXI.TextStyle(textStyle)); //can style it (in globals.js)
   text.x = app.screen.width / 2; // center
-  text.y = app.screen.height / 2; // top
+  text.y = 0; // top
   text.anchor.set(0.5, 0); // center on x, y
+
+  const subText = new PIXI.Text(sceneSubText, new PIXI.TextStyle(subTextStyle)); //can style it (in globals.js)
+  subText.x = app.screen.width / 2; // center
+  subText.y = app.screen.height / 2; // top
+  subText.anchor.set(0.5, 0); // center on x, y
+
   sceneContainer.zIndex = 1;
   sceneContainer.addChild(text); //adding the text itself
+  sceneContainer.addChild(subText); //adding the text itself
   app.stage.addChild(sceneContainer);
   return sceneContainer;
 }

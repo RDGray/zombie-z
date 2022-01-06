@@ -14,7 +14,7 @@ export default class Weather {
     this.lightning.alpha = 0.8; //opacity
     this.flash();
 
-    //raing
+    //rain
     const container = new PIXI.ParticleContainer();
     container.zIndex = 2;
     app.stage.addChild(container);
