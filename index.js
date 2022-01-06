@@ -14,7 +14,7 @@ const app = new PIXI.Application({
   view: canvas,
   width: canvasSize, // to change game size
   height: canvasSize, // to change game size
-  backgroundColor: `red`, //
+  // backgroundColor: bgTexture, //
   resolution: 2,
 });
 //fix resolution from scale
@@ -23,7 +23,6 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 //Add the canvas that Pixi automatically created for you to the HTML document
 const texture = PIXI.Texture.from("assets/textures1.png");
 const bgTexture = new PIXI.Sprite(texture);
-
 app.stage.addChild(bgTexture);
 
 initGame();

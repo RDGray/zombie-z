@@ -7,7 +7,7 @@ export default class Shooting {
     this.player = player;
     this.bulletSpeed = 10;
     this.bullets = [];
-    this.bulletRadius = 8;
+    this.bulletRadius = 5;
     this.maxBullets = 30;
   }
   fire() {
@@ -25,11 +25,14 @@ export default class Shooting {
     );
     this.bullets.forEach((b) => this.app.stage.addChild(b));
     //end anaging bullets outside of the screen
-    const bullet = new PIXI.Graphics();
+    const bullet = new PIXI.Sprite( //bullet animation
+      PIXI.Loader.shared.resources["bullet"].texture
+    );
+    bullet.anchor.set(0.5); //set the anchor to the center
+    bullet.scale.set(0.2); //set the scale to 0.2
     bullet.position.set(this.player.position.x, this.player.position.y);
-    bullet.beginFill(0x0000ff, 1);
-    bullet.drawCircle(0, 0, this.bulletRadius);
-    bullet.endFill();
+    bullet.rotation = this.player.rotation; // bullet rotation as the player rotation
+
     let angle = this.player.rotation - Math.PI / 2;
 
     bullet.velocity = new Victor(
@@ -43,7 +46,7 @@ export default class Shooting {
   set shoot(shooting) {
     if (shooting) {
       this.fire();
-      this.interval = setInterval(() => this.fire(), 500); //this.fire(), it taken out works fine // Section 4 video 7. Shooting
+      this.interval = setInterval(() => this.fire(), 400); // interval on shooting while holding
     } else {
       clearInterval(this.interval);
     }

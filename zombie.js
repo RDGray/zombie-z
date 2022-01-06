@@ -29,6 +29,9 @@ export default class Zombie {
     if (this.attacking) return;
     this.attacking = true;
     this.interval = setInterval(() => this.player.attack(), 200); // get to player and chip away the healthy
+    this.zombie.textures = this.attack.textures; // zombie attack animation
+    this.zombie.animationSpeed = 0.1; // animation speed
+    this.zombie.play(); // play attack animation
   }
   update(delta) {
     //enemy movement

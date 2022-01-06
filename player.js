@@ -15,7 +15,7 @@ export default class Player {
     this.player.animationSpeed = 0.1; // player animation
     this.player.play(); // player animation
     //this.player = new PIXI.Sprite(PIXI.Texture.WHITE); //square as player
-    this.player.anchor.set(0.5);
+    this.player.anchor.set(0.5, 0.3); //player anchor X, Y
     this.player.position.set(app.screen.width / 2, app.screen.height / 2);
     // this.player.width = this.player.height = playerWidth; //square player props
     // this.player.tint = 0xea985d; //square player props
