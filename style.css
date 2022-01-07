@@ -13,6 +13,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(https://i0.wp.com/windowscustomization.com/wp-content/uploads/2019/10/Zombies.gif?fit=768%2C432&quality=80&strip=all&ssl=1&w=640);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 canvas {

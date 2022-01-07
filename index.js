@@ -6,9 +6,10 @@ import Zombie from "./zombie.js";
 import Spawner from "./spawner.js";
 import { textStyle, subTextStyle, zombies } from "./globals.js";
 import Weather from "./weather.js";
+import GameState from "./game-state.js";
 
 //canvas
-let canvasSize = 512; // to change game size
+let canvasSize = 650; // to change game size
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
   view: canvas,
@@ -30,6 +31,7 @@ initGame();
 
 //loading assets
 async function initGame() {
+  app.gameState = GameState.PREINTRO; // games state
   try {
     console.log("Loading...."); // check if loading
     await loadAssets();
@@ -44,23 +46,38 @@ async function initGame() {
     });
 
     //Game start Container
+    let gamePreIntroScene = createScene("Horde", "Click to Continue");
     let gameStartScene = createScene("Horde", "Click to Start");
-    let gameOverScene = createScene("YOU DIED");
-    app.gameStarted = false;
+    let gameOverScene = createScene("", "YOU DIED");
 
     //cursor and square movement   // delta - frame rate
     app.ticker.add((delta) => {
-      gameStartScene.visible = !app.gameStarted; // delete the "Click to Start"
-      gameOverScene.visible = player.dead; // delete the "YOU DIED"
-      if (app.gameStarted === false) return; //game stopped + in spwaner stop
-      player.update(delta); // calling the method from player.js
-      zSpawner.spawns.forEach((zombie) => zombie.update(delta));
-      bulletHitTest({
-        bullets: player.shooting.bullets,
-        zombies: zSpawner.spawns,
-        bulletRadius: 8,
-        zombieRadius: 16,
-      }); // change values radius in all the files and here
+      if (player.dead) app.gameState = GameState.GAMEOVER;
+      gamePreIntroScene.visible = app.gameState === GameState.PREINTRO;
+      gameStartScene.visible = app.gameState === GameState.START; // delete the "Click to Start"
+      gameOverScene.visible = app.gameState === GameState.GAMEOVER; // delete the "YOU DIED"
+
+      switch (app.gameState) {
+        case GameState.PREINTRO:
+          player.scale = 2;
+          break;
+        case GameState.INTRO:
+          player.scale -= 0.01;
+          if (player.scale <= 1) app.gameState = GameState.START;
+          break;
+        case GameState.RUNNING:
+          player.update(delta); // calling the method from player.js
+          zSpawner.spawns.forEach((zombie) => zombie.update(delta));
+          bulletHitTest({
+            bullets: player.shooting.bullets,
+            zombies: zSpawner.spawns,
+            bulletRadius: 2,
+            zombieRadius: 16,
+          }); // change values radius in all the files and here
+          break;
+        default:
+          break;
+      }
     });
   } catch (error) {
     console.log(error.message);
@@ -103,10 +120,10 @@ function createScene(sceneText, sceneSubText) {
   return sceneContainer;
 }
 
-function startGame() {
-  app.gameStarted = true;
-  app.weather.enableSound();
-}
+// function startGame() {
+//   app.gameStarted = true;
+//   app.weather.enableSound();
+// }
 
 async function loadAssets() {
   return new Promise((resolve, reject) => {
@@ -123,5 +140,21 @@ async function loadAssets() {
     PIXI.Loader.shared.load();
   });
 }
+//game state transitions clicks
+function clickHandler() {
+  switch (app.gameState) {
+    case GameState.PREINTRO:
+      app.gameState = GameState.INTRO; // transition to INTRO
+      // music.play();
+      break;
+    case GameState.START:
+      app.gameState = GameState.RUNNING; // transition to INTRO
+      // zombieHorde.play();
+      break;
 
-document.addEventListener("click", startGame); // starting game when click on the screen
+    default:
+      break;
+  }
+}
+
+document.addEventListener("click", clickHandler); // starting game when click on the screen
