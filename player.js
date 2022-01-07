@@ -19,7 +19,7 @@ export default class Player {
     this.player.position.set(app.screen.width / 2, app.screen.height / 2);
     // this.player.width = this.player.height = playerWidth; //square player props
     // this.player.tint = 0xea985d; //square player props
-
+    this.player.zIndex = 1; // player on top of bodies
     app.stage.addChild(this.player);
 
     this.lastMouseButton = 0;
@@ -32,7 +32,7 @@ export default class Player {
     const barHeight = 8;
     this.healthBar = new PIXI.Graphics();
     this.healthBar.beginFill(0x8b0000);
-    this.healthBar.initialWidth = app.screen.width - 20 * margin; // healthbar width
+    this.healthBar.initialWidth = app.screen.width - 25 * margin; // healthbar width
     this.healthBar.drawRect(
       margin,
       app.screen.height - barHeight - margin / 2, // healthbar possition

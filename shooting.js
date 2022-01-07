@@ -7,10 +7,14 @@ export default class Shooting {
     this.player = player;
     this.bulletSpeed = 10;
     this.bullets = [];
-    this.bulletRadius = 2;
+    this.bulletRadius = 3;
     this.maxBullets = 30;
+    this.audio = new Audio("./assets/shoot.mp3");
   }
   fire() {
+    this.audio.currentTime = 0; // ???
+    this.audio.volume = 0.1;
+    this.audio.play(); //shooting sound
     //managing bullets outside of the screen
     if (this.bullets.length >= this.maxBullets) {
       let b = this.bullets.shift();
@@ -46,7 +50,7 @@ export default class Shooting {
   set shoot(shooting) {
     if (shooting) {
       this.fire();
-      this.interval = setInterval(() => this.fire(), 400); // interval on shooting while holding
+      this.interval = setInterval(() => this.fire(), 200); // interval on shooting while holding
     } else {
       clearInterval(this.interval);
     }

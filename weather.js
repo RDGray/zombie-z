@@ -58,6 +58,7 @@ export default class Weather {
     this.flash();
   }
   enableSound() {
+    this.rain.volume = 0.3;
     this.sound = true;
     this.rain.play();
   }

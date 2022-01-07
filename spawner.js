@@ -1,3 +1,5 @@
+import GameState from "./game-state";
+
 export default class Spawner {
   constructor({ app, create }) {
     this.app = app;
@@ -8,7 +10,7 @@ export default class Spawner {
     setInterval(() => this.spawn(), spawnInterval);
   }
   spawn() {
-    if (this.app.gameStarted === false) return; //game stopped + in index stop
+    if (this.app.gameState !== GameState.RUNNING) return; //game stopped + in index stop
     if (this.spawns.length >= this.maxSpawns) return;
     let s = this.create();
     this.spawns.push(s);

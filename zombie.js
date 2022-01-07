@@ -23,6 +23,7 @@ export default class Zombie {
     this.zombie.position.set(r.x, r.y);
 
     app.stage.addChild(this.zombie);
+    this.audio = new Audio("./assets/squelch.mp3");
   }
 
   attackPlayer() {
@@ -57,11 +58,15 @@ export default class Zombie {
   //kill zombies // we can put animation here for kill
   kill() {
     // this.app.stage.removeChild(this.zombie); // zombie dissapear when killed
+    this.audio.currentTime = 0;
+    this.audio.volume = 0.2;
+    this.audio.play(); //zombie die sound
     this.zombie.textures = this.die.textures; // zombie die animation
     this.zombie.loop = false; // stop die looping animation
     this.zombie.onComplete = () =>
       setTimeout(() => this.app.stage.removeChild(this.zombie), 30000); // remove zombie after 30 sec
     this.zombie.play(); // play die animation
+    //this.zombie.zIndex = -1; // they must remain on the map, but they dissapear as soon as dead. added in player.js
     clearInterval(this.interval);
   }
 

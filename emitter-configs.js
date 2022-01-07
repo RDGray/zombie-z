@@ -18,10 +18,10 @@ export let rain = {
   },
   startRotation: {
     min: 65,
-    max: 60,
+    max: 65,
   },
   rotationSpeed: {
-    min: 0,
+    min: 20,
     max: 0,
   },
   lifetime: {

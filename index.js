@@ -27,6 +27,24 @@ const texture = PIXI.Texture.from("assets/textures1.png");
 const bgTexture = new PIXI.Sprite(texture);
 app.stage.addChild(bgTexture);
 
+//Music
+const music = new Audio("./assets/e1m1.mp3");
+music.volume = 0.1;
+music.addEventListener("timeupdate", function () {
+  if (this.currentTime > this.duration - 0.2) {
+    this.currentTime = 0;
+  } // resets the sound after it ends
+});
+
+//Zombie Sounds
+const zombieHorde = new Audio("./assets/horde.mp3");
+zombieHorde.volume = 0.3; //adjust volume from 0 to 1 (0.1, 0.2 etc)
+zombieHorde.addEventListener("timeupdate", function () {
+  if (this.currentTime > this.duration - 0.2) {
+    this.currentTime = 0;
+  } // resets the sound after it ends
+});
+
 initGame();
 
 //loading assets
@@ -120,11 +138,6 @@ function createScene(sceneText, sceneSubText) {
   return sceneContainer;
 }
 
-// function startGame() {
-//   app.gameStarted = true;
-//   app.weather.enableSound();
-// }
-
 async function loadAssets() {
   return new Promise((resolve, reject) => {
     zombies.forEach((z) => {
@@ -145,11 +158,12 @@ function clickHandler() {
   switch (app.gameState) {
     case GameState.PREINTRO:
       app.gameState = GameState.INTRO; // transition to INTRO
-      // music.play();
+      music.play(); // music
+      app.weather.enableSound(); //weather
       break;
     case GameState.START:
       app.gameState = GameState.RUNNING; // transition to INTRO
-      // zombieHorde.play();
+      zombieHorde.play();
       break;
 
     default:
