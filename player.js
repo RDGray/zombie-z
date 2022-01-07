@@ -14,11 +14,9 @@ export default class Player {
     this.player = new PIXI.AnimatedSprite(sheet.animations["idle"]); // player animation
     this.player.animationSpeed = 0.1; // player animation
     this.player.play(); // player animation
-    //this.player = new PIXI.Sprite(PIXI.Texture.WHITE); //square as player
     this.player.anchor.set(0.5, 0.3); //player anchor X, Y
     this.player.position.set(app.screen.width / 2, app.screen.height / 2);
-    // this.player.width = this.player.height = playerWidth; //square player props
-    // this.player.tint = 0xea985d; //square player props
+
     //this.player.zIndex = 1; // player on top of bodies
     app.stage.addChild(this.player);
 

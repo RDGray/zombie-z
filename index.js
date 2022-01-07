@@ -105,6 +105,27 @@ async function initGame() {
   }
 }
 
+//game state transitions clicks
+function clickHandler() {
+  switch (app.gameState) {
+    case GameState.PREINTRO:
+      app.gameState = GameState.INTRO; // transition to INTRO
+      if (!music.paused) music.pause();
+      if (music.paused) music.play(); // music
+      app.weather.enableSound(); //weather
+      break;
+    case GameState.START:
+      app.gameState = GameState.RUNNING;
+      if (!zombieHorde.paused) zombieHorde.pause();
+      if (zombieHorde.paused) zombieHorde.play();
+      break;
+    case GameState.GAMEOVER:
+      break;
+    default:
+      break;
+  }
+}
+
 function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
   bullets.forEach((bullet) => {
     zombies.forEach((zombie, index) => {
@@ -153,26 +174,6 @@ async function loadAssets() {
     PIXI.Loader.shared.onError.add(reject);
     PIXI.Loader.shared.load();
   });
-}
-//game state transitions clicks
-function clickHandler() {
-  switch (app.gameState) {
-    case GameState.PREINTRO:
-      app.gameState = GameState.INTRO; // transition to INTRO
-      if (!music.paused) music.pause();
-      if (music.paused) music.play(); // music
-      app.weather.enableSound(); //weather
-      break;
-    case GameState.START:
-      app.gameState = GameState.RUNNING;
-      if (!zombieHorde.paused) zombieHorde.pause();
-      if (zombieHorde.paused) zombieHorde.play();
-      break;
-    case GameState.GAMEOVER:
-      break;
-    default:
-      break;
-  }
 }
 
 document.addEventListener("click", clickHandler); // starting game when click on the screen
