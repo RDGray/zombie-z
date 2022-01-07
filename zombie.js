@@ -61,6 +61,7 @@ export default class Zombie {
     this.audio.currentTime = 0;
     this.audio.volume = 0.2;
     this.audio.play(); //zombie die sound
+
     this.zombie.textures = this.die.textures; // zombie die animation
     this.zombie.loop = false; // stop die looping animation
     this.zombie.onComplete = () =>

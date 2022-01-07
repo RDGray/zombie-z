@@ -56,7 +56,6 @@ async function initGame() {
     console.log("Loaded"); // check if loaded
     //weather
     app.weather = new Weather({ app });
-
     let player = new Player({ app });
     let zSpawner = new Spawner({
       app,
@@ -64,9 +63,9 @@ async function initGame() {
     });
 
     //Game start Container
-    let gamePreIntroScene = createScene("Horde", "Click to Continue");
-    let gameStartScene = createScene("Horde", "Click to Start");
-    let gameOverScene = createScene("", "YOU DIED");
+    let gamePreIntroScene = createScene("Horde", "Click To Continue");
+    let gameStartScene = createScene("Horde", "Click To Start");
+    let gameOverScene = createScene("YOU DIED", "Click To Try Again");
 
     //cursor and square movement   // delta - frame rate
     app.ticker.add((delta) => {
@@ -120,6 +119,8 @@ function clickHandler() {
       if (zombieHorde.paused) zombieHorde.play();
       break;
     case GameState.GAMEOVER:
+      document.location.reload();
+      clearInterval();
       break;
     default:
       break;
@@ -178,6 +179,8 @@ async function loadAssets() {
 
 document.addEventListener("click", clickHandler); // starting game when click on the screen
 
+//document.addEventListener("touchstart", clickHandler); // not working for mobile
+
 let soundOn = document.querySelector(".sound_on");
 let soundOff = document.querySelector(".sound_off");
 
@@ -187,8 +190,6 @@ soundOn.onclick = () => {
   music.pause();
   zombieHorde.pause();
   app.weather.disableSound();
-  // this will result in `.mute` being either '0' or '1' (strings)
-  // perform mute operation too, if a sound is currently playing, if you want
 };
 
 soundOff.onclick = () => {
@@ -197,7 +198,6 @@ soundOff.onclick = () => {
   music.play();
   zombieHorde.play();
   app.weather.enableSound();
-  console.log(`zzz`);
-  // this will result in `.mute` being either '0' or '1' (strings)
-  // perform mute operation too, if a sound is currently playing, if you want
 };
+
+/////Score

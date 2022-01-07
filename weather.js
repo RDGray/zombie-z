@@ -61,10 +61,12 @@ export default class Weather {
     this.rain.volume = 0.3;
     this.sound = true;
     this.rain.play();
+    this.thunder.play();
   }
   disableSound() {
     this.rain.volume = 0.3;
     this.sound = false;
     this.rain.pause();
+    this.thunder.pause();
   }
 }
