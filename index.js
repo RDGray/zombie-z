@@ -93,6 +93,8 @@ async function initGame() {
             zombieRadius: 16,
           }); // change values radius in all the files and here
           break;
+        case GameState.GAMEOVER:
+          break;
         default:
           break;
       }
@@ -157,14 +159,17 @@ function clickHandler() {
   switch (app.gameState) {
     case GameState.PREINTRO:
       app.gameState = GameState.INTRO; // transition to INTRO
-      music.play(); // music
+      if (!music.paused) music.pause();
+      if (music.paused) music.play(); // music
       app.weather.enableSound(); //weather
       break;
     case GameState.START:
-      app.gameState = GameState.RUNNING; // transition to INTRO
-      zombieHorde.play();
+      app.gameState = GameState.RUNNING;
+      if (!zombieHorde.paused) zombieHorde.pause();
+      if (zombieHorde.paused) zombieHorde.play();
       break;
-
+    case GameState.GAMEOVER:
+      break;
     default:
       break;
   }
@@ -176,8 +181,22 @@ let soundOn = document.querySelector(".sound_on");
 let soundOff = document.querySelector(".sound_off");
 
 soundOn.onclick = () => {
-  localStorage.mute = 1 - Number(localStorage.mute);
-  console.log(`zz`);
+  soundOn.style.display = "none";
+  soundOff.style.display = "block";
+  music.pause();
+  zombieHorde.pause();
+  app.weather.disableSound();
+  // this will result in `.mute` being either '0' or '1' (strings)
+  // perform mute operation too, if a sound is currently playing, if you want
+};
+
+soundOff.onclick = () => {
+  soundOn.style.display = "block";
+  soundOff.style.display = "none";
+  music.play();
+  zombieHorde.play();
+  app.weather.enableSound();
+  console.log(`zzz`);
   // this will result in `.mute` being either '0' or '1' (strings)
   // perform mute operation too, if a sound is currently playing, if you want
 };

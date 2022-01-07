@@ -62,4 +62,9 @@ export default class Weather {
     this.sound = true;
     this.rain.play();
   }
+  disableSound() {
+    this.rain.volume = 0.3;
+    this.sound = false;
+    this.rain.pause();
+  }
 }
