@@ -145,7 +145,6 @@ async function loadAssets() {
     }); // loaded all the json zombie files from assets folder
     PIXI.Loader.shared.add("assets/hero_male.json"); // pixi loader
     PIXI.Loader.shared.add("bullet", "assets/bullet.png"); //name, path
-    PIXI.Loader.shared.add("textures", "assets/textures1.png"); //name, path
     PIXI.Loader.shared.add("rain", "assets/rain.png"); //rain, path
 
     PIXI.Loader.shared.onComplete.add(resolve);
@@ -172,3 +171,13 @@ function clickHandler() {
 }
 
 document.addEventListener("click", clickHandler); // starting game when click on the screen
+
+let soundOn = document.querySelector(".sound_on");
+let soundOff = document.querySelector(".sound_off");
+
+soundOn.onclick = () => {
+  localStorage.mute = 1 - Number(localStorage.mute);
+  console.log(`zz`);
+  // this will result in `.mute` being either '0' or '1' (strings)
+  // perform mute operation too, if a sound is currently playing, if you want
+};
