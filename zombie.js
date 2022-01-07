@@ -11,7 +11,7 @@ export default class Zombie {
     // this.zombie = new PIXI.Graphics(); // old zombie circle
     let r = this.randomSpawnPoint();
     let zombieName = zombies[Math.floor(Math.random() * zombies.length)]; // zombies random sprites
-    this.speed = zombieName === "quickzee" ? 1 : 0.25; // quickzee zombie speed
+    this.speed = zombieName === "quickzee" ? 1 : 0.5; // quickzee zombie speed
     let sheet =
       PIXI.Loader.shared.resources[`assets/${zombieName}.json`].spritesheet; //loading the quickzee sprite
     this.die = new PIXI.AnimatedSprite(sheet.animations["die"]); // zombie die sprite
