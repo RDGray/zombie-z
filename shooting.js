@@ -28,7 +28,7 @@ export default class Shooting {
         Math.abs(b.position.y) < this.app.screen.height
     );
     this.bullets.forEach((b) => this.app.stage.addChild(b));
-    //end anaging bullets outside of the screen
+    //end managing bullets outside of the screen
     const bullet = new PIXI.Sprite( //bullet animation
       PIXI.Loader.shared.resources["bullet"].texture
     );
